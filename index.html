@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>炫酷霓虹 GitHub Page</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #0a0a0a;
+      color: #fff;
+      text-align: center;
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      filter: brightness(0.4); /* 背景微暗化，文字更清楚 */
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+      background: rgba(0,0,0,0.6); /* 半透明背景 */
+      padding: 30px 50px;
+      border-radius: 15px;
+    }
+
+    h1 {
+      font-size: 3rem;
+      color: #00e5ff;
+      text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff, 0 0 30px #00e5ff, 0 0 40px #ffffff;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1.2rem;
+      color: #ffffff;
+      text-shadow: 0 0 5px #00e5ff;
+    }
+
+    a {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 12px 25px;
+      font-size: 1rem;
+      color: #00e5ff;
+      border: 2px solid #00e5ff;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: 0.3s;
+      text-shadow: 0 0 5px #00e5ff;
+    }
+
+    a:hover {
+      background-color: #00e5ff;
+      color: #0a0a0a;
+      box-shadow: 0 0 20px #00e5ff;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="bgCanvas"></canvas>
+
+  <div class="content">
+    <h1>歡迎來到我的 GitHub Page</h1>
+    <p>單頁範例 + 霓虹背景動畫</p>
+    <a href="https://github.com">前往 GitHub</a>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('bgCanvas');
+    const ctx = canvas.getContext('2d');
+    let w, h;
+    let stars = [];
+
+    function resize() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+      stars = [];
+      for(let i=0;i<150;i++){
+        stars.push({
+          x: Math.random()*w,
+          y: Math.random()*h,
+          r: Math.random()*1.5,
+          dx: (Math.random()-0.5)*0.5,
+          dy: (Math.random()-0.5)*0.5,
+          color: `hsl(${Math.random()*360}, 100%, 50%)`
+        });
+      }
+    }
+
+    function draw() {
+      ctx.fillStyle = '#0a0a0a';
+      ctx.fillRect(0,0,w,h);
+      for(let s of stars){
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+        ctx.fillStyle = s.color;
+        ctx.fill();
+        s.x += s.dx;
+        s.y += s.dy;
+        if(s.x<0||s.x>w) s.dx*=-1;
+        if(s.y<0||s.y>h) s.dy*=-1;
+      }
+      requestAnimationFrame(draw);
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+    draw();
+  </script>
+
+</body>
+</html>
